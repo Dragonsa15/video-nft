@@ -1,21 +1,31 @@
 import VodApi from './api';
-import parseCli from './cli';
 import { getDesiredProfile } from './transcode';
+import {LivepeerUploadProfile} from './types/schema';
 
-async function videoNft() {
-	const args = await parseCli();
-	const api = new VodApi(args.apiKey, args.apiEndpoint);
+require('dotenv').config()
+
+let apiKey = process.env.API_KEY || ""
+let apiEndpoint = 'https://livepeer.com'
+let assetname = "testing1234"
+let filename = "./static/Videos/1 v 4 To keep The Dream Alive (Saksham).mp4"
+let metadata = `{
+	"attributes" : "1 v 4 clutch on Icebox",
+	"owner" : "Saksham"
+}`
+
+export async function videoNft(assetName:string ,filename:string,metadata:string): Promise<LivepeerUploadProfile | undefined> {
+	const api = new VodApi(apiKey, apiEndpoint);
 
 	console.log('1. Requesting upload URL... ');
 	const {
 		url: uploadUrl,
 		asset: { id: assetId },
 		task: importTask
-	} = await api.requestUploadUrl(args.assetName);
+	} = await api.requestUploadUrl(assetName);
 	console.log(`Pending asset with id=${assetId}`);
 
 	console.log('2. Uploading file...');
-	await api.uploadFile(uploadUrl, args.filename as string);
+	await api.uploadFile(uploadUrl, filename as string);
 	await api.waitTask(importTask);
 
 	let asset = await api.getAsset(assetId ?? '');
@@ -34,7 +44,7 @@ async function videoNft() {
 	console.log('3. Starting export... ');
 	let { task: exportTask } = await api.exportAsset(
 		asset.id ?? '',
-		JSON.parse(args.nftMetadata)
+		JSON.parse(metadata)
 	);
 	console.log(`Created export task with id=${exportTask.id}`);
 	exportTask = await api.waitTask(exportTask);
@@ -43,6 +53,10 @@ async function videoNft() {
 	console.log(
 		`4. Export successful! Result: \n${JSON.stringify(result, null, 2)}`
 	);
+	
+	return new Promise(async (resolve,reject) => {
+		resolve(result);
+	});
 
 	console.log(
 		`5. Mint your NFT at:\n` +
@@ -50,7 +64,7 @@ async function videoNft() {
 	);
 }
 
-videoNft().catch(err => {
-	console.error(err);
-	process.exit(1);
-});
+// videoNft(assetname,filename,metadata).catch(err => {
+// 	console.error(err);
+// 	process.exit(1);
+// });

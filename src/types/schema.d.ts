@@ -8,6 +8,15 @@
 /**
  * LMPS ffmpeg profile
  */
+
+export interface LivepeerUploadProfile {
+	videoFileCid: string;
+    videoFileUrl?: string | undefined;
+    videoFileGatewayUrl?: string | undefined;
+    nftMetadataCid?: string | undefined;
+    nftMetadataUrl?: string | undefined;
+    nftMetadataGatewayUrl?: string | undefined;
+}
 export interface FfmpegProfile {
 	width: number;
 	name: string;
