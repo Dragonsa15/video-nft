@@ -10,8 +10,8 @@
         "ipfs"
     ],
     "author": {
-        "name": "Livepeer",
-        "email": "infraservice@livepeer.org",
+        "name": "Saksham",
+        "email": "saksham.aladin@gmail.com",
         "url": "https://livepeer.com/"
     },
     "homepage": "https://livepeer.com/dashboard/assets",
@@ -29,12 +29,16 @@
         "bin",
         "lib"
     ],
+    "browser": {
+        "moralis": "false",
+        "react-moralis": "false"
+    },
     "repository": {
         "type": "git",
         "url": "git+https://github.com/livepeer/livepeer-com.git"
     },
     "scripts": {
-        "prepare": "tsc",
+        "prepare": "truffle migrate --reset",
         "start": "tsc && node app.js",
         "lint": "eslint . --ext .ts",
         "format": "prettier --write \"./**/*.{ts,js,json}\""
@@ -45,6 +49,7 @@
     "dependencies": {
         "@openzeppelin/contracts": "^4.5.0",
         "@truffle/contract": "^4.5.2",
+        "@truffle/hdwallet-provider": "^2.0.4",
         "axios": "^0.26.0",
         "chalk": "^5.0.0",
         "cli-alerts": "^1.2.2",
@@ -56,8 +61,10 @@
         "ejs": "^3.1.6",
         "express": "^4.17.3",
         "formidable": "^2.0.1",
+        "ganache-cli": "^6.12.2",
         "inquirer": "^8.2.0",
         "meow": "^10.1.2",
+        "moralis": "^1.5.7",
         "web3": "^1.7.1",
         "yargs": "^17.3.1"
     },
